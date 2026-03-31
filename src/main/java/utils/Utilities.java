@@ -31,7 +31,7 @@ public class Utilities {
         LocalDate start = getNextQuarterStart();
         LocalDate end = getNextQuarterEnd();
 
-        employees.stream()
+       List<Employee> filteredEmployees = employees.stream()
                 .filter(e -> e.getPensionPlan() == null)
                 .filter(e -> {
                     LocalDate eligibilityDate =
@@ -39,15 +39,18 @@ public class Utilities {
 
                     return !eligibilityDate.isBefore(start)
                             && !eligibilityDate.isAfter(end);
-                })
-                .sorted(Comparator.comparing(Employee::getEmploymentDate).reversed())
-                .collect(Collectors.toList());
+                }).collect(Collectors.toList());
+
+            //System.out.println(filteredEmployees);
+
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
         String stringfieldEmpList = objectMapper.writerWithDefaultPrettyPrinter()
-                .writeValueAsString(employees);
-        System.out.println(stringfieldEmpList);
+                .writeValueAsString(filteredEmployees);
+       System.out.println(stringfieldEmpList);
+        System.out.println("Add CI maven project");
     }
 
     private static LocalDate getNextQuarterStart() {
@@ -66,7 +69,6 @@ public class Utilities {
         return LocalDate.of(year, startMonth, 1);
     }
 
-    // 📅 Next Quarter End
     private static LocalDate getNextQuarterEnd() {
         return getNextQuarterStart().plusMonths(3).minusDays(1);
     }
