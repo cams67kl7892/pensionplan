@@ -50,7 +50,7 @@ public class Utilities {
         String stringfieldEmpList = objectMapper.writerWithDefaultPrettyPrinter()
                 .writeValueAsString(filteredEmployees);
        System.out.println(stringfieldEmpList);
-        System.out.println("Add CI maven project");
+       //System.out.println("Add CI maven project");
     }
 
     private static LocalDate getNextQuarterStart() {
